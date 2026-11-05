@@ -35,12 +35,12 @@ Full table of contract addresses and tx hashes for each origin → reactive → 
 
 | | |
 |---|---|
-| APLedger (Sepolia) | `0xC4a2659301724cEB4546815F5e5bE65783D58279` |
-| APMatchReactive (Lasna) | `0xb27ADae268C8322A84e06574B49C2F845Cc112e4` |
-| APEscrow (Sepolia) | `0x7c143047E7DddE6752ba26d457321A7489FA5C16` |
-| MockUSD (Sepolia, testnet only) | `0x9881b1827A05cB60B5Db3Ba139c313bDeD20342c` |
+| APLedger (Sepolia) | `0x64F97864597D323B0Ae7D8fdbd27fC32365547dC` |
+| APMatchReactive (Lasna) | `0xC4a2659301724cEB4546815F5e5bE65783D58279` |
+| APEscrow (Sepolia) | `0x6D15d5108e5E8B7480B520D500e4287Fda761cF9` |
+| MockUSD (Sepolia, testnet only) | `0x53C286Dc509A80Ca46BB9886d75e3d4cDe5418a8` |
 
-Results: 1 invoice paid automatically, 1 duplicate blocked, 1 price hold (released by the CFO afterwards), 1 quantity hold, and 2 no-PO holds. Reactscan shows 3 subscriptions, 12 reactive executions and 6 callbacks.
+Results (Nov 5, 2026 redeploy): 1 invoice paid automatically, 1 duplicate blocked, 1 price hold (released by the CFO afterwards), 1 quantity hold, and 1 no-PO hold. Screenshots below illustrate the same flow on an earlier run.
 
 ![Reactive contract on Reactscan Lasna](docs/reactive-lasna.png)
 ![Callbacks landing on APEscrow (Sepolia)](docs/escrow-events.png)
@@ -56,9 +56,9 @@ KEY_FILE=~/.reactive/deployer.key ./script/demo.sh 2002 6002 10 5000000 10 60000
 ```
 
 ### Deploy your own
-1. Sepolia: `forge create src/MockUSD.sol:MockUSD`, then `forge create src/APLedger.sol:APLedger`
-2. Lasna: `forge create src/APMatchReactive.sol:APMatchReactive --value 2ether --constructor-args 11155111 <ledger> 11155111 200`
-3. Sepolia: `forge create src/APEscrow.sol:APEscrow --value 0.03ether --constructor-args 0xAa14d9Cd0f788Ca23d11805986C1d8bd035D23b4 <reactive> <token>`
+1. Sepolia: `forge create src/MockUSD.sol:MockUSD --broadcast`, then `forge create src/APLedger.sol:APLedger --broadcast`
+2. Lasna: `forge create src/APMatchReactive.sol:APMatchReactive --broadcast --value 2ether --constructor-args 11155111 <ledger> 11155111 200`
+3. Sepolia: `forge create src/APEscrow.sol:APEscrow --broadcast --value 0.03ether --constructor-args 0xAa14d9Cd0f788Ca23d11805986C1d8bd035D23b4 <reactive> <token>`
 4. Lasna: `cast send <reactive> "setEscrow(address)" <escrow>`. Then fund the escrow with the settlement token.
 
 Built on [reactive-lib-omni](https://github.com/Reactive-Network/reactive-lib-omni) (Solidity 0.8.29, `SYSTEM.requestCallbackV_1_0`).
